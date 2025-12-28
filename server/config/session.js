@@ -12,8 +12,11 @@ const createSessionConfig = () => ({
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24 // 1 day
-  }
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Allow cross-origin cookies in production
+    domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined // Allow cookies across Vercel subdomains
+  },
+  name: 'sessionId' // Custom session name
 });
 
 export default createSessionConfig;
