@@ -1,0 +1,20 @@
+{
+  "name": "complaint-tracking-system",
+  "version": "1.0.0",
+  "description": "Full-stack Complaint/Issue Tracking System for SUD Life Insurance",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "install-server": "cd server && npm install",
+    "install-client": "cd client && npm install",
+    "install-all": "npm run install-server && npm run install-client"
+  },
+  "keywords": ["complaint", "tracking", "insurance", "mern"],
+  "author": "SUD Life Insurance",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
