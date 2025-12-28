@@ -28,7 +28,7 @@ app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    
+
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -54,7 +54,7 @@ app.options('*', (req, res) => {
 });
 
 // Session middleware
-app.use(session(createSessionConfi
+app.use(session(createSessionConfig()));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -62,9 +62,9 @@ app.use('/api/complaints', complaintRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    message: 'Server is running', 
-    timestamp: new Date().toISOString() 
+  res.json({
+    message: 'Server is running',
+    timestamp: new Date().toISOString()
   });
 });
 
