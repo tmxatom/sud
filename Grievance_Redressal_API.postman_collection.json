@@ -1,0 +1,509 @@
+{
+	"info": {
+		"_postman_id": "12345678-1234-1234-1234-123456789abc",
+		"name": "Grievance Redressal API",
+		"description": "Complete API collection for the Grievance Redressal Portal with authentication and complaint management endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"1234567890\",\n  \"policyNumber\": \"POL123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user account"
+					}
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"rajesh@test.com\",\n  \"password\": \"customer123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login with existing user credentials"
+					}
+				},
+				{
+					"name": "Login Agent",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"agent@sud.com\",\n  \"password\": \"agent123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login with agent credentials"
+					}
+				},
+				{
+					"name": "Check Session",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/check-session",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"check-session"
+							]
+						},
+						"description": "Check if user session is active"
+					}
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						},
+						"description": "Get current authenticated user profile"
+					}
+				},
+				{
+					"name": "Logout User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Logout current user and destroy session"
+					}
+				}
+			],
+			"description": "Authentication related endpoints"
+		},
+		{
+			"name": "Complaints",
+			"item": [
+				{
+					"name": "Get Complaint Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/complaints/stats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"complaints",
+								"stats"
+							]
+						},
+						"description": "Get complaint statistics for dashboard"
+					}
+				},
+				{
+					"name": "Get All Complaints",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/complaints",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"complaints"
+							]
+						},
+						"description": "Get all complaints (filtered by user role)"
+					}
+				},
+				{
+					"name": "Get Complaints with Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/complaints?status=Open&priority=High&search=claim&page=1&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"complaints"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "Open"
+								},
+								{
+									"key": "priority",
+									"value": "High"
+								},
+								{
+									"key": "search",
+									"value": "claim"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get complaints with filtering and pagination"
+					}
+				},
+				{
+					"name": "Create Complaint",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"policyNumber\": \"POL123456\",\n  \"category\": \"Claims\",\n  \"priority\": \"Medium\",\n  \"subject\": \"Issue with claim processing\",\n  \"description\": \"I am facing issues with my recent claim submission. The process seems to be delayed and I need urgent assistance.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/complaints",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"complaints"
+							]
+						},
+						"description": "Create a new complaint (Customer only)"
+					}
+				},
+				{
+					"name": "Create Billing Complaint",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"policyNumber\": \"POL789012\",\n  \"category\": \"Billing\",\n  \"priority\": \"High\",\n  \"subject\": \"Incorrect billing amount charged\",\n  \"description\": \"I have been charged an incorrect amount on my latest bill. The premium should be $500 but I was charged $750. Please review and correct this immediately.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/complaints",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"complaints"
+							]
+						},
+						"description": "Create a billing-related complaint"
+					}
+				},
+				{
+					"name": "Get Complaint by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/complaints/{{complaintId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"complaints",
+								"{{complaintId}}"
+							]
+						},
+						"description": "Get a specific complaint by ID"
+					}
+				},
+				{
+					"name": "Update Complaint Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"In Progress\",\n  \"statusNote\": \"Assigned to technical team for review and investigation\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/complaints/{{complaintId}}/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"complaints",
+								"{{complaintId}}",
+								"status"
+							]
+						},
+						"description": "Update complaint status (Agent only)"
+					}
+				},
+				{
+					"name": "Update Complaint Priority",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"priority\": \"Critical\",\n  \"priorityNote\": \"Escalated due to customer urgency and potential financial impact\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/complaints/{{complaintId}}/priority",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"complaints",
+								"{{complaintId}}",
+								"priority"
+							]
+						},
+						"description": "Update complaint priority (Agent only)"
+					}
+				},
+				{
+					"name": "Add Comment to Complaint",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Thank you for the update. I have provided additional documentation via email. Please let me know if you need anything else.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/complaints/{{complaintId}}/comments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"complaints",
+								"{{complaintId}}",
+								"comments"
+							]
+						},
+						"description": "Add a comment to a complaint"
+					}
+				},
+				{
+					"name": "Add Agent Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"We have reviewed your case and are processing the refund. You should see the corrected amount reflected in your account within 3-5 business days.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/complaints/{{complaintId}}/comments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"complaints",
+								"{{complaintId}}",
+								"comments"
+							]
+						},
+						"description": "Add an agent response comment"
+					}
+				},
+				{
+					"name": "Archive Complaint",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"archiveReason\": \"Issue resolved successfully. Customer confirmed satisfaction with the resolution.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/complaints/{{complaintId}}/archive",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"complaints",
+								"{{complaintId}}",
+								"archive"
+							]
+						},
+						"description": "Archive a complaint (Agent only)"
+					}
+				}
+			],
+			"description": "Complaint management endpoints"
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/health",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"health"
+					]
+				},
+				"description": "Server health check endpoint"
+			}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "complaintId",
+			"value": "64f8b2c3d4e5f6789abcdef0",
+			"type": "string",
+			"description": "Sample complaint ID - replace with actual ID from create complaint response"
+		}
+	]
+}
