@@ -206,15 +206,6 @@ const Login = () => {
           </p>
         </div>
 
-        <div className="mt-6 border-t border-gray-200 pt-6">
-          <div className="text-sm text-gray-500">
-            <p className="font-medium mb-2">Demo Accounts:</p>
-            <div className="space-y-1">
-              <p><strong>Customer:</strong> rajesh@test.com / customer123</p>
-              <p><strong>Agent:</strong> agent@sud.com / agent123</p>
-            </div>
-          </div>
-        </div>
         </div>
       </div>
     </div>
