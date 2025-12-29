@@ -54,7 +54,7 @@ app.options('*', (req, res) => {
 });
 
 // Session middleware
-app.use(session(createSessionConfi
+app.use(session(createSessionConfig))
 
 // Routes
 app.use('/api/auth', authRoutes);
