@@ -69,6 +69,17 @@ const login = async (req, res) => {
       policyNumber: user.policyNumber
     };
 
+    // Save session explicitly
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+      } else {
+        console.log('Session saved successfully:', req.sessionID);
+      }
+    });
+
+    console.log('Login successful for:', email, 'Session ID:', req.sessionID);
+
     res.json({
       message: 'Login successful',
       user: {
@@ -77,7 +88,8 @@ const login = async (req, res) => {
         email: user.email,
         role: user.role,
         policyNumber: user.policyNumber
-      }
+      },
+      sessionId: req.sessionID // Add session ID for debugging
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -90,21 +102,21 @@ const logout = (req, res) => {
     if (err) {
       return res.status(500).json({ message: 'Could not log out' });
     }
-    res.clearCookie('connect.sid');
+    res.clearCookie('sessionId'); // Use the custom session name
     res.json({ message: 'Logout successful' });
   });
 };
 
 const checkSession = (req, res) => {
   if (req.session && req.session.user) {
-    res.json({ 
-      authenticated: true, 
-      user: req.session.user 
+    res.json({
+      authenticated: true,
+      user: req.session.user
     });
   } else {
-    res.json({ 
-      authenticated: false, 
-      user: null 
+    res.json({
+      authenticated: false,
+      user: null
     });
   }
 };
