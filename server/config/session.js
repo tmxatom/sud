@@ -2,10 +2,13 @@ import MongoStore from 'connect-mongo';
 
 const createSessionConfig = () => {
   const sessionSecret = process.env.SESSION_SECRET || 'fallback-secret-key-for-development';
+  const isProduction = process.env.NODE_ENV === 'production';
   
   if (!process.env.SESSION_SECRET) {
     console.warn('SESSION_SECRET not found in environment variables, using fallback');
   }
+  
+  console.log('Session config - Production:', isProduction);
   
   return {
     secret: sessionSecret,
@@ -17,13 +20,13 @@ const createSessionConfig = () => {
       ttl: 24 * 60 * 60 // 1 day
     }),
     cookie: {
-      secure: true, // Always use secure cookies for HTTPS
+      secure: isProduction, // Only secure in production (HTTPS)
       httpOnly: false, // Allow JavaScript access for debugging
       maxAge: 1000 * 60 * 60 * 24, // 1 day
-      sameSite: 'none', // Required for cross-origin cookies
+      sameSite: isProduction ? 'none' : 'lax', // 'none' for cross-origin in production, 'lax' for local
     },
     name: 'connect.sid', // Use default session name
-    proxy: true // Trust proxy (required for Vercel)
+    proxy: isProduction // Only trust proxy in production
   };
 };
 

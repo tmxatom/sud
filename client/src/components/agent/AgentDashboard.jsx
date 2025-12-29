@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { complaintService } from '../../services/complaintService';
+import LoadingSpinner from '../shared/LoadingSpinner';
 
 const AgentDashboard = () => {
   const { user } = useAuth();
@@ -75,8 +76,8 @@ const AgentDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
       </div>
     );
   }

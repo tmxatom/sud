@@ -70,17 +70,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Debug session endpoint
-app.get('/api/debug/session', (req, res) => {
-  res.json({
-    hasSession: !!req.session,
-    sessionId: req.sessionID,
-    user: req.session?.user || null,
-    cookies: req.headers.cookie || 'No cookies',
-    origin: req.headers.origin,
-    timestamp: new Date().toISOString()
-  });
-});
+
 
 // Error handling middleware
 app.use(errorHandler);
