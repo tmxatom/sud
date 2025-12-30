@@ -5,7 +5,8 @@ import {
     login,
     logout,
     checkSession,
-    getMe
+    getMe,
+    updateNotificationToken
 } from '../controllers/authController.js';
 import {
     validateRegistration,
@@ -38,5 +39,10 @@ router.get('/check-session', checkSession);
 // @desc    Get current user
 // @access  Private
 router.get('/me', isAuthenticated, getMe);
+
+// @route   PUT /api/auth/notification-token
+// @desc    Update user's notification token
+// @access  Private
+router.put('/notification-token', isAuthenticated, updateNotificationToken);
 
 export default router;

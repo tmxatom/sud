@@ -1,4 +1,6 @@
+import { sendNotification } from '../config/firebase.js';
 import Complaint from '../models/Complaint.js';
+import User from '../models/User.js';
 import generateComplaintId from '../utils/generateComplaintId.js';
 
 const createComplaint = async (req, res) => {
@@ -192,7 +194,16 @@ const addComment = async (req, res) => {
     const { text } = req.body;
     const user = req.session.user;
 
+
+   
+  
+    
+
     const complaint = await Complaint.findById(id);
+    const owner = await User.findById(complaint.customerId)
+    const notificatioToken = owner.notificationToken;
+    console.log(owner);
+    
     if (!complaint) {
       return res.status(404).json({ message: 'Complaint not found' });
     }
@@ -212,10 +223,16 @@ const addComment = async (req, res) => {
 
     await complaint.save();
 
+    await sendNotification(notificatioToken ,complaint.complaintId);
+
     res.json({
       message: 'Comment added successfully',
       complaint
     });
+
+
+
+
   } catch (error) {
     console.error('Add comment error:', error);
     res.status(500).json({ message: 'Server error adding comment' });

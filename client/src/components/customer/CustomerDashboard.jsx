@@ -7,6 +7,7 @@ import LoadingSpinner from '../shared/LoadingSpinner';
 import ErrorMessage from '../shared/ErrorMessage';
 import StatusBadge from '../shared/StatusBadge';
 import PriorityIndicator from '../shared/PriorityIndicator';
+import NotificationStatus from '../shared/NotificationStatus';
 import { formatDate } from '../../utils/helpers';
 import { COMPLAINT_STATUSES, COMPLAINT_PRIORITIES, COMPLAINT_CATEGORIES } from '../../utils/constants';
 
@@ -78,9 +79,12 @@ const CustomerDashboard = () => {
               <h1 className="text-3xl font-bold text-gray-900">
                 Welcome back, {user.name}
               </h1>
-              <p className="mt-1 text-sm text-gray-600">
-                Policy Number: {user.policyNumber}
-              </p>
+              <div className="mt-1 flex items-center space-x-4">
+                <p className="text-sm text-gray-600">
+                  Policy Number: {user.policyNumber}
+                </p>
+                <NotificationStatus />
+              </div>
             </div>
             <Link
               to="/customer/create-complaint"

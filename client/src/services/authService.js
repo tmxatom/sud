@@ -29,5 +29,11 @@ export const authService = {
   getMe: async () => {
     const response = await api.get('/auth/me');
     return response.data;
+  },
+
+  // Update notification token
+  updateNotificationToken: async (token) => {
+    const response = await api.put('/auth/notification-token', { token });
+    return response.data;
   }
 };

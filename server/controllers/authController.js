@@ -25,7 +25,8 @@ const register = async (req, res) => {
       email: user.email,
       name: user.name,
       role: user.role,
-      policyNumber: user.policyNumber
+      policyNumber: user.policyNumber,
+      notificationToken: user.notificationToken
     };
 
     res.status(201).json({
@@ -35,7 +36,8 @@ const register = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        policyNumber: user.policyNumber
+        policyNumber: user.policyNumber,
+        notificationToken: user.notificationToken
       }
     });
   } catch (error) {
@@ -66,16 +68,21 @@ const login = async (req, res) => {
       email: user.email,
       name: user.name,
       role: user.role,
-      policyNumber: user.policyNumber
+      policyNumber: user.policyNumber,
+      notificationToken: user.notificationToken
     };
 
-    // Save session explicitly
-    req.session.save((err) => {
-      if (err) {
-        console.error('Session save error:', err);
-      } else {
-        console.log('Session saved successfully:', req.sessionID);
-      }
+    // Save session explicitly and wait for it
+    await new Promise((resolve, reject) => {
+      req.session.save((err) => {
+        if (err) {
+          console.error('Session save error:', err);
+          reject(err);
+        } else {
+          console.log('Session saved successfully:', req.sessionID);
+          resolve();
+        }
+      });
     });
 
     console.log('Login successful for:', email, 'Session ID:', req.sessionID);
@@ -87,7 +94,8 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        policyNumber: user.policyNumber
+        policyNumber: user.policyNumber,
+        notificationToken: user.notificationToken
       },
       sessionId: req.sessionID // Add session ID for debugging
     });
@@ -129,10 +137,44 @@ const getMe = (req, res) => {
   }
 };
 
+const updateNotificationToken = async (req, res) => {
+  try {
+    const { token } = req.body;
+    const user = req.session.user;
+
+    if (!user) {
+      return res.status(401).json({ message: 'Not authenticated' });
+    }
+
+    // Update user's notification token in database
+    const updatedUser = await User.findByIdAndUpdate(
+      user.id,
+      { notificationToken: token },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update session with new token info
+    req.session.user.notificationToken = token;
+
+    res.json({
+      message: 'Notification token updated successfully',
+      token: token
+    });
+  } catch (error) {
+    console.error('Update notification token error:', error);
+    res.status(500).json({ message: 'Server error updating notification token' });
+  }
+};
+
 export {
   register,
   login,
   logout,
   checkSession,
-  getMe
+  getMe,
+  updateNotificationToken
 };

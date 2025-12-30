@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { authService } from '../services/authService';
+import { generateToken } from '../notifications/firebase';
 
 const AuthContext = createContext();
 
@@ -43,6 +44,18 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       const response = await authService.login(credentials);
       setUser(response.user);
+      
+      // Generate and save FCM token after successful login
+      try {
+        const fcmToken = await generateToken();
+        if (fcmToken) {
+          console.log('FCM token generated and saved after login');
+        }
+      } catch (fcmError) {
+        console.error('Error generating FCM token after login:', fcmError);
+        // Don't throw error for FCM token failure, login was successful
+      }
+      
       return response;
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Login failed';
@@ -56,6 +69,18 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       const response = await authService.register(userData);
       setUser(response.user);
+      
+      // Generate and save FCM token after successful registration
+      try {
+        const fcmToken = await generateToken();
+        if (fcmToken) {
+          console.log('FCM token generated and saved after registration');
+        }
+      } catch (fcmError) {
+        console.error('Error generating FCM token after registration:', fcmError);
+        // Don't throw error for FCM token failure, registration was successful
+      }
+      
       return response;
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Registration failed';
