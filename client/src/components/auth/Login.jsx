@@ -6,6 +6,7 @@ import LoadingSpinner from '../shared/LoadingSpinner';
 import ErrorMessage from '../shared/ErrorMessage';
 import { BorderBeam } from '@/components/ui/border-beam';
 import { loginSchema, formatZodErrors } from '../../lib/validations';
+import z from 'zod';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -55,6 +56,7 @@ const Login = () => {
     const validation = loginSchema.safeParse(formData);
     if (!validation.success) {
       setValidationErrors(formatZodErrors(validation.error));
+      
       return;
     }
 

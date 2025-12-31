@@ -10,7 +10,7 @@ node_modules/
 client/build/
 dist/
 MoistureMate/
-./sudinc-firebase-adminsdk-fbsvc-5e72e24e89.json
+sudinc-firebase-adminsdk-fbsvc-5e72e24e89.json
 
 # Logs
 *.log

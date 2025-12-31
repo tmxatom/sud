@@ -2,13 +2,10 @@ import { z } from 'zod';
 
 // Login validation schema
 export const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'Email is required')
-    .email('Please enter a valid email address'),
+  email:z.email('Please enter a valid email address').min(1, 'Email is required'),
+
   password: z
     .string()
-    .min(1, 'Password is required')
     .min(6, 'Password must be at least 6 characters long')
 });
 
@@ -16,27 +13,25 @@ export const loginSchema = z.object({
 export const registerSchema = z.object({
   name: z
     .string()
-    .min(1, 'Name is required')
-    .min(2, 'Name must be at least 2 characters long')
+    .min(5, 'Name must be at least 2 characters long')
     .max(50, 'Name must be less than 50 characters')
     .refine((val) => /^[a-zA-Z\s]+$/.test(val), {
       message: 'Name can only contain letters and spaces'
     }),
-  email: z
-    .string()
-    .min(1, 'Email is required')
-    .email('Please enter a valid email address'),
+  email: z.email('Please enter a valid email address'),
+
   phone: z
     .string()
     .min(1, 'Phone number is required')
     .refine((val) => /^[0-9]{10}$/.test(val), {
       message: 'Please enter a valid 10-digit phone number'
     }),
+
   policyNumber: z
     .string()
-    .min(1, 'Policy number is required')
     .min(3, 'Policy number must be at least 3 characters long')
     .max(20, 'Policy number must be less than 20 characters'),
+
   password: z
     .string()
     .min(1, 'Password is required')
@@ -88,10 +83,6 @@ export const commentSchema = z.object({
 
 // Helper function to format Zod errors
 export const formatZodErrors = (error) => {
-  const errors = {};
-  error.errors.forEach((err) => {
-    const path = err.path.join('.');
-    errors[path] = err.message;
-  });
-  return errors;
+  console.log(z.flattenError(error).fieldErrors);
+  return (z.flattenError(error).fieldErrors);
 };
