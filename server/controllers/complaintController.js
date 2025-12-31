@@ -50,9 +50,7 @@ const getComplaints = async (req, res) => {
       category,
       search,
       sortBy = 'createdAt',
-      sortOrder = 'desc',
-      page = 1,
-      limit = 10
+      sortOrder = 'desc'
     } = req.query;
 
     let query = { isArchived: false };
@@ -74,27 +72,18 @@ const getComplaints = async (req, res) => {
       ];
     }
 
-    // Calculate pagination
-    const skip = (page - 1) * limit;
+    // Sort options
     const sortOptions = {};
     sortOptions[sortBy] = sortOrder === 'desc' ? -1 : 1;
 
-    // Execute query
+    // Execute query - fetch all complaints
     const complaints = await Complaint.find(query)
       .sort(sortOptions)
-      .skip(skip)
-      .limit(parseInt(limit))
       .populate('customerId', 'name email');
-
-    const total = await Complaint.countDocuments(query);
 
     res.json({
       complaints,
-      pagination: {
-        current: parseInt(page),
-        pages: Math.ceil(total / limit),
-        total
-      }
+      total: complaints.length
     });
   } catch (error) {
     console.error('Get complaints error:', error);
@@ -194,16 +183,11 @@ const addComment = async (req, res) => {
     const { text } = req.body;
     const user = req.session.user;
 
-
-   
-  
-    
-
     const complaint = await Complaint.findById(id);
-    const owner = await User.findById(complaint.customerId)
+    const owner = await User.findById(complaint.customerId);
     const notificatioToken = owner.notificationToken;
     console.log(owner);
-    
+
     if (!complaint) {
       return res.status(404).json({ message: 'Complaint not found' });
     }
@@ -223,16 +207,12 @@ const addComment = async (req, res) => {
 
     await complaint.save();
 
-    await sendNotification(notificatioToken ,complaint.complaintId);
+    await sendNotification(notificatioToken, complaint.complaintId);
 
     res.json({
       message: 'Comment added successfully',
       complaint
     });
-
-
-
-
   } catch (error) {
     console.error('Add comment error:', error);
     res.status(500).json({ message: 'Server error adding comment' });

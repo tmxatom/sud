@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { complaintService } from '../../services/complaintService';
+import LoadingSpinner from '../shared/LoadingSpinner';
 
 const ComplaintDetails = () => {
   const { id } = useParams();
@@ -116,8 +117,8 @@ const ComplaintDetails = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
       </div>
     );
   }

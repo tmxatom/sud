@@ -16,15 +16,24 @@ const AgentDashboard = () => {
     fetchStats();
   }, [filter]);
 
+  // Map frontend filter values to database enum values
+  const getStatusForQuery = (filterValue) => {
+    const statusMap = {
+      'all': undefined,
+      'Submitted': 'Submitted',
+      'In Progress': 'In Progress',
+      'Resolved': 'Resolved',
+      'Closed': 'Closed'
+    };
+    return statusMap[filterValue];
+  };
+
   const fetchComplaints = async () => {
     try {
       setLoading(true);
       const response = await complaintService.getComplaints({
-        status: filter === 'all' ? undefined : filter,
-        page: 1,
-        limit: 20
+        status: getStatusForQuery(filter)
       });
-      console.log('Complaints response:', response); // Debug log
       setComplaints(response.complaints || []);
     } catch (error) {
       console.error('Error fetching complaints:', error);
@@ -37,7 +46,6 @@ const AgentDashboard = () => {
   const fetchStats = async () => {
     try {
       const response = await complaintService.getStats();
-      console.log('Stats response:', response); // Debug log
       setStats(response || {});
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -57,19 +65,20 @@ const AgentDashboard = () => {
 
   const getStatusColor = (status) => {
     const colors = {
-      submitted: 'bg-blue-100 text-blue-800',
-      'in-progress': 'bg-yellow-100 text-yellow-800',
-      resolved: 'bg-green-100 text-green-800',
-      closed: 'bg-gray-100 text-gray-800'
+      'Submitted': 'bg-blue-100 text-blue-800',
+      'In Progress': 'bg-yellow-100 text-yellow-800',
+      'Resolved': 'bg-green-100 text-green-800',
+      'Closed': 'bg-gray-100 text-gray-800'
     };
     return colors[status] || 'bg-gray-100 text-gray-800';
   };
 
   const getPriorityColor = (priority) => {
     const colors = {
-      low: 'bg-green-100 text-green-800',
-      medium: 'bg-yellow-100 text-yellow-800',
-      high: 'bg-red-100 text-red-800'
+      'Low': 'bg-green-100 text-green-800',
+      'Medium': 'bg-yellow-100 text-yellow-800',
+      'High': 'bg-red-100 text-red-800',
+      'Critical': 'bg-red-200 text-red-900'
     };
     return colors[priority] || 'bg-gray-100 text-gray-800';
   };
@@ -115,17 +124,16 @@ const AgentDashboard = () => {
       <div className="mb-6">
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8">
-            {['all', 'submitted', 'in-progress', 'resolved'].map((status) => (
+            {['all', 'Submitted', 'In Progress', 'Resolved', 'Closed'].map((status) => (
               <button
                 key={status}
                 onClick={() => setFilter(status)}
-                className={`py-2 px-1 border-b-2 font-medium text-sm capitalize ${
-                  filter === status
+                className={`py-2 px-1 border-b-2 font-medium text-sm ${filter === status
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                  }`}
               >
-                {status === 'all' ? 'All Complaints' : status.replace('-', ' ')}
+                {status === 'all' ? 'All Complaints' : status}
               </button>
             ))}
           </nav>
@@ -160,7 +168,7 @@ const AgentDashboard = () => {
                     </div>
                     <p className="mt-1 text-sm text-gray-600">{complaint.subject}</p>
                     <p className="mt-1 text-xs text-gray-500">
-                      Customer: {complaint.customerId?.name} | 
+                      Customer: {complaint.customerId?.name} |
                       Created: {new Date(complaint.createdAt).toLocaleDateString()}
                     </p>
                   </div>
@@ -176,10 +184,10 @@ const AgentDashboard = () => {
                       onChange={(e) => handleStatusUpdate(complaint._id, e.target.value)}
                       className="text-sm border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="submitted">Submitted</option>
-                      <option value="in-progress">In Progress</option>
-                      <option value="resolved">Resolved</option>
-                      <option value="closed">Closed</option>
+                      <option value="Submitted">Submitted</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Resolved">Resolved</option>
+                      <option value="Closed">Closed</option>
                     </select>
                   </div>
                 </div>
