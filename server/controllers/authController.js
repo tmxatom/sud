@@ -4,13 +4,11 @@ const register = async (req, res) => {
   try {
     const { name, email, password, phone, policyNumber, role = 'customer' } = req.body;
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists with this email' });
     }
 
-    // Create new user
     const userData = { name, email, password, phone, role };
     if (role === 'customer' && policyNumber) {
       userData.policyNumber = policyNumber;
@@ -19,7 +17,7 @@ const register = async (req, res) => {
     const user = new User(userData);
     await user.save();
 
-    
+
     res.status(201).json({
       message: 'Registration successful. Please login to continue.',
       user: {
@@ -37,19 +35,17 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Check password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Create session
+
     req.session.user = {
       id: user._id,
       email: user.email,
@@ -59,7 +55,6 @@ const login = async (req, res) => {
       notificationToken: user.notificationToken
     };
 
-    // Save session explicitly and wait for it
     await new Promise((resolve, reject) => {
       req.session.save((err) => {
         if (err) {
@@ -84,7 +79,7 @@ const login = async (req, res) => {
         policyNumber: user.policyNumber,
         notificationToken: user.notificationToken
       },
-      sessionId: req.sessionID // Add session ID for debugging
+      sessionId: req.sessionID
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -97,7 +92,7 @@ const logout = (req, res) => {
     if (err) {
       return res.status(500).json({ message: 'Could not log out' });
     }
-    res.clearCookie('sessionId'); // Use the custom session name
+    res.clearCookie('sessionId');
     res.json({ message: 'Logout successful' });
   });
 };
@@ -133,7 +128,6 @@ const updateNotificationToken = async (req, res) => {
       return res.status(401).json({ message: 'Not authenticated' });
     }
 
-    // Update user's notification token in database
     const updatedUser = await User.findByIdAndUpdate(
       user.id,
       { notificationToken: token },
@@ -144,7 +138,7 @@ const updateNotificationToken = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Update session with new token info
+
     req.session.user.notificationToken = token;
 
     res.json({

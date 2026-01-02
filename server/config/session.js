@@ -23,7 +23,7 @@ const createSessionConfig = () => {
       secure: isProduction, 
       httpOnly: true, 
       maxAge: 1000 * 60 * 60 * 24, 
-      sameSite: isProduction ? 'none' : 'lax',
+      sameSite:  'none' 
     },
     name: 'connect.sid', 
     proxy: isProduction 
