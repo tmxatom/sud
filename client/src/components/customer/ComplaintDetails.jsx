@@ -32,7 +32,7 @@ const ComplaintDetails = () => {
       const response = await complaintService.getComplaintById(id);
       const complaintData = response.complaint || response;
 
-      // Verify this complaint belongs to the current customer
+    
       if (complaintData.customerId !== user.id && complaintData.customerId?._id !== user.id) {
         setError('You do not have permission to view this complaint.');
         return;
@@ -55,8 +55,7 @@ const ComplaintDetails = () => {
 
   const handleAddComment = async (e) => {
     e.preventDefault();
-    
-    // Validate comment with Zod
+  
     const validation = commentSchema.safeParse({ text: newComment });
     if (!validation.success) {
       setCommentErrors(formatZodErrors(validation.error));
@@ -68,7 +67,7 @@ const ComplaintDetails = () => {
       setCommentErrors({});
       await complaintService.addComment(id, { text: newComment });
       setNewComment('');
-      fetchComplaint(); // Refresh to show new comment
+      fetchComplaint(); 
     } catch (error) {
       console.error('Error adding comment:', error);
       setError('Failed to add comment. Please try again.');

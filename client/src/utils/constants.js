@@ -33,13 +33,3 @@ export const PRIORITY_COLORS = {
   'High': 'bg-orange-100 text-orange-800',
   'Critical': 'bg-red-100 text-red-800'
 };
-
-export const ROUTES = {
-  HOME: '/',
-  LOGIN: '/login',
-  REGISTER: '/register',
-  CUSTOMER_DASHBOARD: '/customer/dashboard',
-  AGENT_DASHBOARD: '/agent/dashboard',
-  CREATE_COMPLAINT: '/customer/create-complaint',
-  COMPLAINT_DETAIL: '/complaint/:id'
-};

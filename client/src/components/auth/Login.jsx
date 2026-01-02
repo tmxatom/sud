@@ -65,11 +65,8 @@ const Login = () => {
     setValidationErrors({});
 
     try {
-      const response = await login(formData);
-      const redirectPath = response.user.role === 'customer'
-        ? '/customer/dashboard'
-        : '/agent/dashboard';
-      navigate(redirectPath, { replace: true });
+      await login(formData);
+      // Don't navigate here - let useEffect handle it after state updates
     } catch (error) {
       setError(error.message);
     } finally {
@@ -77,7 +74,23 @@ const Login = () => {
     }
   };
 
-  // Show loading spinner while checking authentication
+  // Handle navigation after successful login
+  useEffect(() => {
+    if (user && !authLoading) {
+      const from = location.state?.from?.pathname;
+
+      if (from) {
+        navigate(from, { replace: true });
+      } else {
+        const redirectPath = user.role === 'customer'
+          ? '/customer/dashboard'
+          : '/agent/dashboard';
+        navigate(redirectPath, { replace: true });
+      }
+    }
+  }, [user, authLoading, navigate, location.state]);
+
+
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">

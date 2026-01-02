@@ -1,7 +1,4 @@
-// utils/toast.js
 import { toast } from 'react-hot-toast';
-
-// Single unified toast notification function
 export const showToast = (message, type = 'info') => {
   const baseStyle = {
     background: '#fff',
@@ -38,15 +35,6 @@ export const showToast = (message, type = 'info') => {
   });
 };
 
-// Optional: Keep specific functions for convenience
 export const showSuccessToast = (message) => showToast(message, 'success');
 
-
-
-
-// Dismiss functions
-export const dismissToast = (toastId) => toast.dismiss(toastId);
-export const dismissAllToasts = () => toast.dismiss();
-
-// Default export for Firebase notifications
 export default showToast;

@@ -45,17 +45,6 @@ export const AuthProvider = ({ children }) => {
       const response = await authService.login(credentials);
       setUser(response.user);
 
-      // Generate and save FCM token after successful login
-      try {
-        const fcmToken = await generateToken();
-        if (fcmToken) {
-          console.log('FCM token generated and saved after login');
-        }
-      } catch (fcmError) {
-        console.error('Error generating FCM token after login:', fcmError);
-        // Don't throw error for FCM token failure, login was successful
-      }
-
       return response;
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Login failed';
@@ -68,9 +57,6 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       const response = await authService.register(userData);
-      // Don't set user - registration doesn't create session anymore
-      // User will be set when they login
-
       return response;
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Registration failed';
@@ -86,7 +72,6 @@ export const AuthProvider = ({ children }) => {
       setError(null);
     } catch (error) {
       console.error('Logout error:', error);
-      // Force logout on client side even if server request fails
       setUser(null);
     }
   };

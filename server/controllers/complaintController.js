@@ -60,7 +60,7 @@ const getComplaints = async (req, res) => {
       query.customerId = user.id;
     }
 
-    // Apply filters
+  
     if (status) query.status = status;
     if (priority) query.priority = priority;
     if (category) query.category = category;
@@ -72,11 +72,9 @@ const getComplaints = async (req, res) => {
       ];
     }
 
-    // Sort options
     const sortOptions = {};
     sortOptions[sortBy] = sortOrder === 'desc' ? -1 : 1;
 
-    // Execute query - fetch all complaints
     const complaints = await Complaint.find(query)
       .sort(sortOptions)
       .populate('customerId', 'name email');
@@ -105,7 +103,6 @@ const getComplaintById = async (req, res) => {
       return res.status(404).json({ message: 'Complaint not found' });
     }
 
-    // Check permissions
     if (user.role === 'customer' && complaint.customerId._id.toString() !== user.id) {
       return res.status(403).json({ message: 'Access denied' });
     }
@@ -128,7 +125,7 @@ const updateComplaintStatus = async (req, res) => {
       return res.status(404).json({ message: 'Complaint not found' });
     }
 
-    // Update status
+  
     complaint.status = status;
     complaint.statusHistory.push({
       status,
@@ -192,7 +189,7 @@ const addComment = async (req, res) => {
       return res.status(404).json({ message: 'Complaint not found' });
     }
 
-    // Check permissions for customers
+  
     if (user.role === 'customer' && complaint.customerId.toString() !== user.id) {
       return res.status(403).json({ message: 'Access denied' });
     }
@@ -248,7 +245,7 @@ const getComplaintStats = async (req, res) => {
     const user = req.session.user;
     let matchQuery = { isArchived: false };
 
-    // Role-based filtering
+
     if (user.role === 'customer') {
       matchQuery.customerId = user.id;
     }
