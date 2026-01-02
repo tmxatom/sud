@@ -28,8 +28,7 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized access - let the component handle the redirect
-      // Don't force redirect here as it can interfere with React Router
+  
       console.warn('Unauthorized access detected');
     }
     return Promise.reject(error);

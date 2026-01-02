@@ -35,13 +35,13 @@ const ComplaintDetails = () => {
       console.log('Full API response:', response);
       console.log('Response data type:', typeof response);
       console.log('Response keys:', Object.keys(response || {}));
-      
+
       // Backend returns { complaint: {...} }, so we need to extract the complaint
       const complaintData = response.complaint || response;
       console.log('Extracted complaint data:', complaintData);
       console.log('Complaint data type:', typeof complaintData);
       console.log('Complaint keys:', Object.keys(complaintData || {}));
-      
+
       setComplaint(complaintData);
     } catch (error) {
       console.error('Error fetching complaint:', error);
@@ -68,6 +68,21 @@ const ComplaintDetails = () => {
       fetchComplaint();
     } catch (error) {
       console.error('Error updating priority:', error);
+    }
+  };
+
+  const handleArchive = async () => {
+    if (!window.confirm('Are you sure you want to delete this complaint? It will be hidden from the dashboard.')) {
+      return;
+    }
+
+    try {
+      await complaintService.archiveComplaint(id);
+      alert('Complaint archived successfully');
+      navigate('/agent/dashboard');
+    } catch (error) {
+      console.error('Error archiving complaint:', error);
+      alert('Failed to archive complaint');
     }
   };
 
@@ -177,11 +192,11 @@ const ComplaintDetails = () => {
                 </span>
               </div>
             </div>
-            
+
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               {complaint.subject}
             </h3>
-            
+
             <div className="prose max-w-none">
               <p className="text-gray-700 whitespace-pre-wrap">
                 {complaint.description}
@@ -210,7 +225,7 @@ const ComplaintDetails = () => {
             <h3 className="text-lg font-medium text-gray-900 mb-4">
               Comments ({complaint.comments?.length || 0})
             </h3>
-            
+
             {/* Add Comment Form */}
             <form onSubmit={handleAddComment} className="mb-6">
               <textarea
@@ -288,6 +303,24 @@ const ComplaintDetails = () => {
               <option value="Critical">Critical</option>
             </select>
           </div>
+
+          {/* Archive Button - Only show for Closed complaints */}
+          {complaint.status === 'Closed' && !complaint.isArchived && (
+            <div className="bg-white shadow rounded-lg p-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Delete Complaint
+              </h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Delete this complaint to hide it from the dashboard.
+              </p>
+              <button
+                onClick={handleArchive}
+                className="w-full bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-800 transition-colors"
+              >
+                Delete Complaint
+              </button>
+            </div>
+          )}
 
           {/* Status History */}
           {complaint.statusHistory && complaint.statusHistory.length > 0 && (

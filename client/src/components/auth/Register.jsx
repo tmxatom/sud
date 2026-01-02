@@ -28,8 +28,8 @@ const Register = () => {
   // Redirect if already authenticated
   useEffect(() => {
     if (!authLoading && isAuthenticated && user) {
-      const redirectPath = user.role === 'customer' 
-        ? '/customer/dashboard' 
+      const redirectPath = user.role === 'customer'
+        ? '/customer/dashboard'
         : '/agent/dashboard';
       navigate(redirectPath, { replace: true });
     }
@@ -52,7 +52,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate form with Zod
     const validation = registerSchema.safeParse(formData);
     if (!validation.success) {
@@ -67,7 +67,8 @@ const Register = () => {
     try {
       const { confirmPassword, ...registrationData } = formData;
       await register(registrationData);
-      navigate('/customer/dashboard', { replace: true });
+      // Redirect to login page - registration doesn't create session
+      navigate('/login', { replace: true });
     } catch (error) {
       setError(error.message);
     } finally {
@@ -104,223 +105,217 @@ const Register = () => {
             Register to submit and track your complaints
           </p>
         </div>
-        
+
         <div className="relative">
-          <BorderBeam 
-            size={100} 
-            duration={12} 
+          <BorderBeam
+            size={100}
+            duration={12}
             delay={9}
             colorFrom="#10b981"
             colorTo="#059669"
           />
           <form className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-lg border" onSubmit={handleSubmit}>
-          <ErrorMessage message={error} onClose={() => setError('')} />
-          
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Full Name
-              </label>
-              <div className="mt-1 relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiUser className="h-5 w-5 text-gray-400" />
+            <ErrorMessage message={error} onClose={() => setError('')} />
+
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  Full Name
+                </label>
+                <div className="mt-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiUser className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${validationErrors.name ? 'border-red-300' : 'border-gray-300'
+                      } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                    placeholder="Enter your full name"
+                  />
                 </div>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${
-                    validationErrors.name ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                  placeholder="Enter your full name"
-                />
+                {validationErrors.name && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors.name}</p>
+                )}
               </div>
-              {validationErrors.name && (
-                <p className="mt-1 text-sm text-red-600">{validationErrors.name}</p>
-              )}
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email Address
+                </label>
+                <div className="mt-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiMail className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${validationErrors.email ? 'border-red-300' : 'border-gray-300'
+                      } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                    placeholder="Enter your email"
+                  />
+                </div>
+                {validationErrors.email && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                  Phone Number
+                </label>
+                <div className="mt-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiPhone className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${validationErrors.phone ? 'border-red-300' : 'border-gray-300'
+                      } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                    placeholder="Enter your phone number"
+                  />
+                </div>
+                {validationErrors.phone && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors.phone}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="policyNumber" className="block text-sm font-medium text-gray-700">
+                  Policy Number
+                </label>
+                <div className="mt-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiFileText className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="policyNumber"
+                    name="policyNumber"
+                    type="text"
+                    required
+                    value={formData.policyNumber}
+                    onChange={handleChange}
+                    className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${validationErrors.policyNumber ? 'border-red-300' : 'border-gray-300'
+                      } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                    placeholder="Enter your policy number"
+                  />
+                </div>
+                {validationErrors.policyNumber && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors.policyNumber}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  Password
+                </label>
+                <div className="mt-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiLock className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    className={`appearance-none relative block w-full pl-10 pr-10 py-2 border ${validationErrors.password ? 'border-red-300' : 'border-gray-300'
+                      } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                    placeholder="Create a password"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <FiEyeOff className="h-5 w-5 text-gray-400" />
+                    ) : (
+                      <FiEye className="h-5 w-5 text-gray-400" />
+                    )}
+                  </button>
+                </div>
+                {validationErrors.password && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                  Confirm Password
+                </label>
+                <div className="mt-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiLock className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    required
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className={`appearance-none relative block w-full pl-10 pr-10 py-2 border ${validationErrors.confirmPassword ? 'border-red-300' : 'border-gray-300'
+                      } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                    placeholder="Confirm your password"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? (
+                      <FiEyeOff className="h-5 w-5 text-gray-400" />
+                    ) : (
+                      <FiEye className="h-5 w-5 text-gray-400" />
+                    )}
+                  </button>
+                </div>
+                {validationErrors.confirmPassword && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors.confirmPassword}</p>
+                )}
+              </div>
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email Address
-              </label>
-              <div className="mt-1 relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiMail className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${
-                    validationErrors.email ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                  placeholder="Enter your email"
-                />
-              </div>
-              {validationErrors.email && (
-                <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
-              )}
+              <button
+                type="submit"
+                disabled={loading}
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? <LoadingSpinner size="sm" /> : 'Create Account'}
+              </button>
             </div>
+          </form>
 
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                Phone Number
-              </label>
-              <div className="mt-1 relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiPhone className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${
-                    validationErrors.phone ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                  placeholder="Enter your phone number"
-                />
-              </div>
-              {validationErrors.phone && (
-                <p className="mt-1 text-sm text-red-600">{validationErrors.phone}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="policyNumber" className="block text-sm font-medium text-gray-700">
-                Policy Number
-              </label>
-              <div className="mt-1 relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiFileText className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="policyNumber"
-                  name="policyNumber"
-                  type="text"
-                  required
-                  value={formData.policyNumber}
-                  onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-3 py-2 border ${
-                    validationErrors.policyNumber ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                  placeholder="Enter your policy number"
-                />
-              </div>
-              {validationErrors.policyNumber && (
-                <p className="mt-1 text-sm text-red-600">{validationErrors.policyNumber}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="mt-1 relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-10 py-2 border ${
-                    validationErrors.password ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                  placeholder="Create a password"
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <FiEyeOff className="h-5 w-5 text-gray-400" />
-                  ) : (
-                    <FiEye className="h-5 w-5 text-gray-400" />
-                  )}
-                </button>
-              </div>
-              {validationErrors.password && (
-                <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                Confirm Password
-              </label>
-              <div className="mt-1 relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
-                  required
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className={`appearance-none relative block w-full pl-10 pr-10 py-2 border ${
-                    validationErrors.confirmPassword ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                  placeholder="Confirm your password"
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? (
-                    <FiEyeOff className="h-5 w-5 text-gray-400" />
-                  ) : (
-                    <FiEye className="h-5 w-5 text-gray-400" />
-                  )}
-                </button>
-              </div>
-              {validationErrors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">{validationErrors.confirmPassword}</p>
-              )}
-            </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-600">
+              Already have an account?{' '}
+              <Link
+                to="/login"
+                className="font-medium text-blue-600 hover:text-blue-500"
+              >
+                Sign in here
+              </Link>
+            </p>
           </div>
-
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? <LoadingSpinner size="sm" /> : 'Create Account'}
-            </button>
-          </div>
-        </form>
-
-        <div className="text-center">
-          <p className="text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link
-              to="/login"
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
-              Sign in here
-            </Link>
-          </p>
-        </div>
         </div>
       </div>
     </div>

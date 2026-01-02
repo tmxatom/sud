@@ -7,7 +7,6 @@ import connectDB from './config/db.js';
 import createSessionConfig from './config/session.js';
 import errorHandler from './middleware/errorHandler.js';
 
-// Debug environment variables
 console.log('Environment check:');
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('SESSION_SECRET exists:', !!process.env.SESSION_SECRET);
@@ -23,7 +22,6 @@ const app = express();
 // Connect to database
 connectDB();
 
-// Simple CORS configuration
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5173',
@@ -33,7 +31,6 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, curl, Postman)
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.includes(origin)) {

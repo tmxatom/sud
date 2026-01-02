@@ -19,25 +19,12 @@ const register = async (req, res) => {
     const user = new User(userData);
     await user.save();
 
-    // Create session
-    req.session.user = {
-      id: user._id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
-      policyNumber: user.policyNumber,
-      notificationToken: user.notificationToken
-    };
-
+    
     res.status(201).json({
-      message: 'User registered successfully',
+      message: 'Registration successful. Please login to continue.',
       user: {
-        id: user._id,
-        name: user.name,
         email: user.email,
-        role: user.role,
-        policyNumber: user.policyNumber,
-        notificationToken: user.notificationToken
+        role: user.role
       }
     });
   } catch (error) {

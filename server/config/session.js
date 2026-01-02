@@ -1,14 +1,14 @@
 import MongoStore from 'connect-mongo';
 
 const createSessionConfig = () => {
-  const sessionSecret = process.env.SESSION_SECRET || 'fallback-secret-key-for-development';
+  const sessionSecret = process.env.SESSION_SECRET;
   const isProduction = process.env.NODE_ENV === 'production';
   
   if (!process.env.SESSION_SECRET) {
-    console.warn('SESSION_SECRET not found in environment variables, using fallback');
+    console.warn('SESSION_SECRET not found in environment variables');
   }
   
-  console.log('Session config - Production:', isProduction);
+  console.log('Session config  Production:', isProduction);
   
   return {
     secret: sessionSecret,
@@ -17,16 +17,16 @@ const createSessionConfig = () => {
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_URI,
       collectionName: 'sessions',
-      ttl: 24 * 60 * 60 // 1 day
+      ttl: 24 * 60 * 60 
     }),
     cookie: {
-      secure: isProduction, // Only secure in production (HTTPS)
-      httpOnly: false, // Allow JavaScript access for debugging
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-      sameSite: isProduction ? 'none' : 'lax', // 'none' for cross-origin in production, 'lax' for local
+      secure: isProduction, 
+      httpOnly: true, 
+      maxAge: 1000 * 60 * 60 * 24, 
+      sameSite: isProduction ? 'none' : 'lax',
     },
-    name: 'connect.sid', // Use default session name
-    proxy: isProduction // Only trust proxy in production
+    name: 'connect.sid', 
+    proxy: isProduction 
   };
 };
 
