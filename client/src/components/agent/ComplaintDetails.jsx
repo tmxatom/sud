@@ -36,7 +36,7 @@ const ComplaintDetails = () => {
       console.log('Response data type:', typeof response);
       console.log('Response keys:', Object.keys(response || {}));
 
-      // Backend returns { complaint: {...} }, so we need to extract the complaint
+
       const complaintData = response.complaint || response;
       console.log('Extracted complaint data:', complaintData);
       console.log('Complaint data type:', typeof complaintData);
@@ -268,7 +268,7 @@ const ComplaintDetails = () => {
           </div>
         </div>
 
-        {/* Sidebar */}
+     
         <div className="space-y-6">
           {/* Status Update */}
           <div className="bg-white shadow rounded-lg p-6">

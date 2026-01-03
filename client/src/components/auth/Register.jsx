@@ -67,7 +67,6 @@ const Register = () => {
     try {
       const { confirmPassword, ...registrationData } = formData;
       await register(registrationData);
-      // Redirect to login page - registration doesn't create session
       navigate('/login', { replace: true });
     } catch (error) {
       setError(error.message);
@@ -76,7 +75,6 @@ const Register = () => {
     }
   };
 
-  // Show loading spinner while checking authentication
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -85,7 +83,6 @@ const Register = () => {
     );
   }
 
-  // Don't render register form if already authenticated (will redirect)
   if (isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -107,13 +104,6 @@ const Register = () => {
         </div>
 
         <div className="relative">
-          <BorderBeam
-            size={100}
-            duration={12}
-            delay={9}
-            colorFrom="#10b981"
-            colorTo="#059669"
-          />
           <form className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-lg border" onSubmit={handleSubmit}>
             <ErrorMessage message={error} onClose={() => setError('')} />
 
