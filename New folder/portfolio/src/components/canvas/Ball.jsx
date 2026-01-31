@@ -1,17 +1,17 @@
 import React, { Suspense } from 'react'
 import { technologies } from "../../utils/index"
 import { Canvas } from '@react-three/fiber'
-import { Decal, Float , OrbitControls ,Preload,useTexture ,  } from '@react-three/drei'
+import { Decal, Float, OrbitControls, Preload, useTexture, } from '@react-three/drei'
 import CanvasLoader from './CanvasLoader'
 
 const Ball = ({ imageUrl }) => {
   const [decal] = useTexture([imageUrl])
   return (
-    <Float speed={0} rotationIntensity={1} >
+    <Float speed={0.5} rotationIntensity={1.5} >
       <ambientLight intensity={0.25} />
-      <directionalLight position={[0,0,0.095]} />
+      <directionalLight position={[0, 0, 0.095]} />
       <mesh scale={2.75}>
-        <icosahedronGeometry castShawdow reciveShadow args={[1,1]}/>
+        <icosahedronGeometry castShawdow reciveShadow args={[1, 1]} />
         <meshStandardMaterial
           color={"#fff8eb"}
           polygonOffset
@@ -32,17 +32,17 @@ const Ball = ({ imageUrl }) => {
 
 
 
-const BallCanvas = ({icon}) => {
+const BallCanvas = ({ icon }) => {
   return (
-     <Canvas
-      frameloop="demand"
+    <Canvas
+      frameloop="always"
       gl={{ preserveDrawingBuffer: true, }}
     >
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
           enableZoom={false}
         />
-          <Ball imageUrl={icon}/>
+        <Ball imageUrl={icon} />
       </Suspense>
       <Preload all />
     </Canvas>

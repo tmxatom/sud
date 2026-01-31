@@ -1,7 +1,10 @@
 import { spring } from "framer-motion";
+
 import {
   mobile,
+  home,
   backend,
+  hushpad,
   creator,
   web,
   next,
@@ -27,6 +30,8 @@ import {
   jobit,
   tripguide,
   threejs,
+  offlineupi,
+  HeAl,
 } from "../assets";
 
 export const navLinks = [
@@ -116,7 +121,6 @@ const technologies = [
     name: "Spring Boot",
     icon: springBoot,
   },
-
 ];
 
 const experiences = [
@@ -201,7 +205,7 @@ const testimonials = [
   },
 ];
 
-const projects = [
+const project = [
   {
     name: "Car Rent",
     description:
@@ -266,5 +270,34 @@ const projects = [
     source_code_link: "https://github.com/",
   },
 ];
-
+const projects = [
+  {
+    quote:
+      "An offline-first payment platform that allows users to send and verify transactions without internet access. Uses React PWA, AES encryption, SMS-based communication via Twilio, and a Spring Boot backend to ensure secure and reliable payment processing with multi-language support.",
+    name: "Offline upi",
+    sourceLink: "https://github.com/Afnankazi/Offline-Upi",
+    image: offlineupi,
+  },
+  {
+    quote:
+      "A full-stack wellness app that helps users improve emotional well-being through an AI-powered therapist, mood tracking with interactive sliders, personalized wellness goals, and community support features. Built with React 18 and TypeScript on the frontend, using a RAG-based AI system via n8n workflows and ElevenLabs for natural, human-like voice responses.",
+    name: "HeAl",
+    sourceLink: "https://github.com/Siddharth-The-Dragon-Slayer/Smurfs",
+    image: HeAl,
+  },
+  {
+    quote:
+      "HushPad is a privacy-focused notes application designed to keep your personal and professional information safe. Built with TypeScript and React for a smooth and responsive frontend experience, and powered by a Spring Boot backend.",
+    name: "HushPad",
+    image: hushpad,
+    sourceLink: "https://github.com/Afnankazi/Hushpad",
+  },
+  {
+    quote:
+      "A modern web application that enables VESIT students to easily apply for and manage railway concession passes online. Built with Next.js, the platform streamlines the application process, reduces manual paperwork, and provides a smooth, user-friendly experience.",
+    name: "Vesit Rail",
+    image: home,
+    sourceLink: "https://github.com/VESITRail/VESITRail",
+  },
+];
 export { services, technologies, experiences, testimonials, projects };

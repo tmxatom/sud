@@ -1,32 +1,40 @@
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { About, Contact, Experience, Feedbacks, Hero, Tech, Works, StarsCanvas } from "./components";
 import NavbarDemo from "./components/Navbar"; // Import the new navbar
+import Hackthons from "./components/Hackthons"; // Import Hackthons component
+
+// Main Portfolio Page Component
+const MainPage = () => {
+  return (
+    <>
+      {/* Navbar only on main page */}
+      <NavbarDemo />
+
+      <div className='relative z-0 bg-primary '>
+        {/* Changed to use your custom color */}
+        <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center  ' >
+          <Hero />
+        </div>
+        <About />
+        <Experience />
+        <Tech />
+        <Works />
+        <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center'>
+          <Contact />
+        </div>
+      </div>
+    </>
+  );
+};
 
 const App = () => {
   return (
     <BrowserRouter>
-        {/* New Navbar */}
-  
-    
-        
-        {/* Main Content */}
-        <div className='relative z-0 bg-primary '>
-            {/* Changed to use your custom color */}
-          <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center  ' >
-            <NavbarDemo />
-            <Hero />
-          </div>
-          <About />
-          <Experience />
-          <Tech />
-          <Works />
-          <Feedbacks />
-          <div className='relative z-0'>
-            <Contact />
-            <StarsCanvas />
-          </div>
-        </div>
-
+      {/* Define Routes */}
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/hackathons" element={<Hackthons />} />
+      </Routes>
     </BrowserRouter>
   );
 }

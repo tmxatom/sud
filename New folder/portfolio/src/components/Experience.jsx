@@ -14,7 +14,7 @@ export function TimelineDemo() {
           <h1 className="font-bold text-xl mb-2">Full Stack Developer</h1>
           <p className="mb-8 text-xs  md:text-[17px] leading-[28px] dark:text-neutral-200 ">
             Built and launched VESIT Railway from scratch for our College
-            <p>June 2025 – present </p>
+            <span>June 2025 – present </span>
             <br />
             ● System Modernization: Involved in migration of a legacy railway
             management system from PHP to Next.js, significantly improving
@@ -54,7 +54,7 @@ export function TimelineDemo() {
           </h1>
           <p className="mb-8 text-xs md:text-[17px] leading-[28px] dark:text-neutral-200">
             Built an Internal Communication Platform
-            <p>February 2026 – July 2026</p>
+            <span>February 2026 – July 2026</span>
             <br />
             ● Designed and developed a company-wide internal communication tool
             using the MERN stack (MongoDB, Express, React, Node.js) to
@@ -75,7 +75,7 @@ export function TimelineDemo() {
           <h1 className="font-bold text-xl mb-2">Frontend Developer</h1>
           <p className="mb-8 text-xs  md:text-[17px] leading-[28px] dark:text-neutral-200 ">
             Built An AI Scoring System
-            <p>June 2025 – September 2025 </p>
+            <span>June 2025 – September 2025 </span>
             <br />
             ● Working on developing an AI-powered automatic scoring system for
             8-Ball Pool, enabling real-time detection and scoring of player

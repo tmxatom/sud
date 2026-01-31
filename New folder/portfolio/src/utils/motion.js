@@ -22,16 +22,22 @@ export const fadeIn = (direction, type, delay, duration) => {
       x: direction === "left" ? 100 : direction === "right" ? -100 : 0,
       y: direction === "up" ? 100 : direction === "down" ? -100 : 0,
       opacity: 0,
+      scale: 0.8,
+      rotateY: direction === "right" ? -15 : direction === "left" ? 15 : 0,
     },
     show: {
       x: 0,
       y: 0,
       opacity: 1,
+      scale: 1,
+      rotateY: 0,
       transition: {
         type: type,
         delay: delay,
         duration: duration,
-        ease: "easeOut",
+        ease: type === "spring" ? [0.25, 0.46, 0.45, 0.94] : "easeOut",
+        stiffness: type === "spring" ? 100 : undefined,
+        damping: type === "spring" ? 15 : undefined,
       },
     },
   };

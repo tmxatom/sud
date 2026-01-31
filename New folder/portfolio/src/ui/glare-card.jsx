@@ -3,7 +3,7 @@ import { useRef } from "react";
 import {motion} from 'framer-motion'
 import { fadeIn } from "../utils/motion";
 export const GlareCard = ({
-  children,variants,
+  children,variants, whileHover,
   className
 }) => {
   const isPointerInside = useRef(false);
@@ -64,6 +64,7 @@ export const GlareCard = ({
   };
   return (
     <motion.div variants={variants}
+      whileHover={whileHover}
       style={containerStyle}
       className="bg-green-pink-gradient relative isolate [contain:layout_style] [perspective:600px] transition-transform duration-[var(--duration)] ease-[var(--easing)] delay-[var(--delay)] will-change-transform w-[320px] [aspect-ratio:17/21]"
       ref={refElement}
